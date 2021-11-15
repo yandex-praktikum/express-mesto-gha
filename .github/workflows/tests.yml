@@ -1,0 +1,28 @@
+name: Tests
+
+on:
+  push:
+    branches:
+      - main
+
+
+jobs:
+  sprint_13:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [12.x]
+    steps:
+    - name: Set up GitHub Actions
+      uses: actions/checkout@v2
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+    - name: Сheck if the repository is private
+      run: exit 1
+      if: ${{github.event.repository.private}}
+    - name: Get testing lib
+      run: set -eu && git clone https://github.com/Yandex-Practicum/web-autotest-public.git
+    - name: Run test
+      run: bash ./web-autotest-public/run13.sh
