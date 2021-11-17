@@ -7,7 +7,7 @@ on:
 
 
 jobs:
-  sprint_13:
+  sprint_13_and_14:
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -24,5 +24,7 @@ jobs:
       if: ${{github.event.repository.private}}
     - name: Get testing lib
       run: set -eu && git clone https://github.com/Yandex-Practicum/web-autotest-public.git
-    - name: Run test
+    - name: Run test sprint 13
       run: bash ./web-autotest-public/run13.sh
+    - name: Run test sprint 14
+      run: bash ./web-autotest-public/run14.sh
