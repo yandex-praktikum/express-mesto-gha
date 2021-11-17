@@ -1,3 +1,4 @@
+[![Tests](https://github.com/yandex-praktikum/express-mesto-gha/actions/workflows/tests.yml/badge.svg)](https://github.com/yandex-praktikum/express-mesto-gha/actions/workflows/tests.yml)
 # Проект Mesto фронтенд + бэкенд
 
 ## Директории
