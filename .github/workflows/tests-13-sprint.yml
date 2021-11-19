@@ -1,4 +1,4 @@
-name: Tests
+name: Tests 13 sprint
 
 on:
   push:
@@ -26,5 +26,3 @@ jobs:
       run: set -eu && git clone https://github.com/Yandex-Practicum/web-autotest-public.git
     - name: Run test sprint 13
       run: bash ./web-autotest-public/run13.sh
-    - name: Run test sprint 14
-      run: bash ./web-autotest-public/run14.sh
