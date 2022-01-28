@@ -7,7 +7,7 @@ on:
 
 
 jobs:
-  sprint_13_and_14:
+  sprint_14_test_config:
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -24,5 +24,36 @@ jobs:
       if: ${{github.event.repository.private}}
     - name: Get testing lib
       run: set -eu && git clone https://github.com/Yandex-Practicum/web-autotest-public.git
-    - name: Run test sprint 14
+    - name: Run test code
       run: bash ./web-autotest-public/run14.sh
+
+  sprint_14_test_endpoint:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [12.x]
+        mongodb-version: ['4.4']
+    steps:
+    - name: Set up GitHub Actions
+      uses: actions/checkout@v2
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+    - name: Сheck if the repository is private
+      run: exit 1
+      if: ${{github.event.repository.private}}
+    - name: Start MongoDB
+      uses: supercharge/mongodb-github-action@1.6.0
+      with:
+        mongodb-version: ${{ matrix.mongodb-version }}
+    - name: Installing pnpm
+      run: npm install -g pnpm
+    - name: Installing Dependencies
+      run: pnpm i -f
+    - name: Run server
+      run: pnpm run start &
+    - name: Run test endpoint
+      uses: matt-ball/newman-action@master
+      with:
+        collection: https://www.getpostman.com/collections/ac51bed867a2db09ac1a

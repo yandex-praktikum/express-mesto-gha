@@ -7,7 +7,7 @@ on:
 
 
 jobs:
-  sprint_13_and_14:
+  sprint_13:
     runs-on: ubuntu-latest
     strategy:
       matrix:
