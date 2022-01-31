@@ -53,6 +53,10 @@ jobs:
       run: pnpm i -f
     - name: Run server
       run: pnpm run start &
+    - name: Installing wait-port
+      run: npm install -g wait-port
+    - name: Wait for server to start
+      run: wait-port -t 30000 localhost:3000
     - name: Run test endpoint
       uses: matt-ball/newman-action@master
       with:
