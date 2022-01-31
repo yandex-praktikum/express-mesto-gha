@@ -24,8 +24,8 @@ jobs:
       if: ${{github.event.repository.private}}
     - name: Get testing lib
       run: set -eu && git clone https://github.com/Yandex-Practicum/web-autotest-public.git
-    - name: Run test code
-      run: bash ./web-autotest-public/run14.sh
+    - name: Run test config
+      run: bash ./web-autotest-public/proj14/bin/test-config.sh
 
   sprint_14_test_endpoint:
     runs-on: ubuntu-latest
