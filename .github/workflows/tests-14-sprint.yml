@@ -7,7 +7,7 @@ on:
 
 
 jobs:
-  sprint_14_test_config:
+  test_config:
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -24,10 +24,14 @@ jobs:
       if: ${{github.event.repository.private}}
     - name: Get testing lib
       run: set -eu && git clone https://github.com/Yandex-Practicum/web-autotest-public.git
+    - name: Installing pnpm
+      run: npm install -g pnpm
+    - name: Installing Dependencies
+      run: pnpm i
     - name: Run test config
       run: bash ./web-autotest-public/proj14/bin/test-config.sh
 
-  sprint_14_test_endpoint:
+  test_endpoints:
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -55,7 +59,7 @@ jobs:
       run: npm install -g wait-port
     - name: Wait for server to start
       run: wait-port -t 30000 localhost:3000
-    - name: Run test endpoint
+    - name: Run test endpoints
       uses: matt-ball/newman-action@master
       with:
         collection: https://www.getpostman.com/collections/ac51bed867a2db09ac1a
