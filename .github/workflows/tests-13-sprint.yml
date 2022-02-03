@@ -63,7 +63,5 @@ jobs:
       run: npm install -g wait-port
     - name: Wait for server to start
       run: wait-port -t 30000 localhost:3000
-    - name: Run test endpoints
-      uses: matt-ball/newman-action@master
-      with:
-        collection: https://www.getpostman.com/collections/90361e4f436c6d5bf7be
+    - name: Run test config
+      run: bash ./web-autotest-public/proj13/bin/test-endpoints.sh
