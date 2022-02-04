@@ -51,6 +51,8 @@ jobs:
       uses: supercharge/mongodb-github-action@1.6.0
       with:
         mongodb-version: ${{ matrix.mongodb-version }}
+    - name: Get testing lib
+      run: set -eu && git clone https://github.com/Yandex-Practicum/web-autotest-public.git
     - name: Installing Dependencies
       run: npm i
     - name: Run server
