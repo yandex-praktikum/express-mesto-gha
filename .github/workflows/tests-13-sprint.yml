@@ -54,7 +54,7 @@ jobs:
       with:
         mongodb-version: ${{ matrix.mongodb-version }}
     - name: Get testing lib
-      run: set -eu && git clone https://github.com/rpill/web-autotest-public.git
+      run: set -eu && git clone https://github.com/Yandex-Practicum/web-autotest-public.git
     - name: Copy Makefile
       run: cp ./web-autotest-public/Makefile ./Makefile
     - name: Run test config
