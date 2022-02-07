@@ -24,12 +24,14 @@ jobs:
       if: ${{github.event.repository.private}}
     - name: Get testing lib
       run: set -eu && git clone https://github.com/Yandex-Practicum/web-autotest-public.git
+    - name: Copy Makefile
+      run: cp ./web-autotest-public/Makefile ./Makefile
     - name: Installing pnpm
       run: npm install -g pnpm
     - name: Installing Dependencies
       run: pnpm i
     - name: Run test config
-      run: bash ./web-autotest-public/proj13/bin/test-config.sh
+      run: make proj13-test-config
 
   test_endpoints:
     runs-on: ubuntu-latest
