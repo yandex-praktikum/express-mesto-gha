@@ -53,8 +53,10 @@ jobs:
         mongodb-version: ${{ matrix.mongodb-version }}
     - name: Get testing lib
       run: set -eu && git clone https://github.com/rpill/web-autotest-public.git
+    - name: Copy Makefile
+      run: cp ./web-autotest-public/Makefile ./Makefile
     - name: Run test config
-      run: bash ./web-autotest-public/proj13/bin/prepare-test-endpoints.sh
+      run: make proj13-prepare-test-endpoints
     - name: Installing Dependencies
       run: npm i
     - name: Run server
@@ -64,4 +66,4 @@ jobs:
     - name: Wait for server to start
       run: wait-port -t 30000 localhost:3000
     - name: Run test config
-      run: bash ./web-autotest-public/proj13/bin/test-endpoints.sh
+      run: make proj13-test-endpoints

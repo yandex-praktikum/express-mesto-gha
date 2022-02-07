@@ -24,12 +24,14 @@ jobs:
       if: ${{github.event.repository.private}}
     - name: Get testing lib
       run: set -eu && git clone https://github.com/Yandex-Practicum/web-autotest-public.git
+    - name: Copy Makefile
+      run: cp ./web-autotest-public/Makefile ./Makefile
     - name: Installing pnpm
       run: npm install -g pnpm
     - name: Installing Dependencies
       run: pnpm i
     - name: Run test config
-      run: bash ./web-autotest-public/proj14/bin/test-config.sh
+      run: make proj14-test-config
 
   test_endpoints:
     runs-on: ubuntu-latest
@@ -53,6 +55,8 @@ jobs:
         mongodb-version: ${{ matrix.mongodb-version }}
     - name: Get testing lib
       run: set -eu && git clone https://github.com/Yandex-Practicum/web-autotest-public.git
+    - name: Copy Makefile
+      run: cp ./web-autotest-public/Makefile ./Makefile
     - name: Installing Dependencies
       run: npm i
     - name: Run server
@@ -61,5 +65,5 @@ jobs:
       run: npm install -g wait-port
     - name: Wait for server to start
       run: wait-port -t 30000 localhost:3000
-    - name: Run test config
-      run: bash ./web-autotest-public/proj14/bin/test-endpoints.sh
+    - name: Run test endpoints
+      run: make proj14-test-endpoints
