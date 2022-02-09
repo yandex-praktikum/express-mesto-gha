@@ -26,10 +26,8 @@ jobs:
       run: set -eu && git clone https://github.com/Yandex-Practicum/web-autotest-public.git
     - name: Copy Makefile
       run: cp ./web-autotest-public/Makefile ./Makefile
-    - name: Installing pnpm
-      run: npm install -g pnpm
     - name: Installing Dependencies
-      run: pnpm i
+      run: npm i
     - name: Run test config
       run: make proj14-test-config
 
