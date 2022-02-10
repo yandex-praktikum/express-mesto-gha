@@ -32,6 +32,7 @@ jobs:
       run: make proj14-test-config
 
   test_endpoints:
+    needs: test_config
     runs-on: ubuntu-latest
     strategy:
       matrix:
