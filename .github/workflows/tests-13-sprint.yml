@@ -9,16 +9,13 @@ on:
 jobs:
   test_config:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: [14.x]
     steps:
     - name: Set up GitHub Actions
       uses: actions/checkout@v2
-    - name: Use Node.js ${{ matrix.node-version }}
+    - name: Use Node.js 14.x
       uses: actions/setup-node@v1
       with:
-        node-version: ${{ matrix.node-version }}
+        node-version: 14.x
     - name: Сheck if the repository is private
       run: exit 1
       if: ${{github.event.repository.private}}
@@ -34,24 +31,20 @@ jobs:
   test_endpoints:
     needs: test_config
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: [14.x]
-        mongodb-version: ['4.4']
     steps:
     - name: Set up GitHub Actions
       uses: actions/checkout@v2
-    - name: Use Node.js ${{ matrix.node-version }}
+    - name: Use Node.js 14.x
       uses: actions/setup-node@v1
       with:
-        node-version: ${{ matrix.node-version }}
+        node-version: 14.x
     - name: Сheck if the repository is private
       run: exit 1
       if: ${{github.event.repository.private}}
     - name: Start MongoDB
       uses: supercharge/mongodb-github-action@1.6.0
       with:
-        mongodb-version: ${{ matrix.mongodb-version }}
+        mongodb-version: '4.4'
     - name: Get testing lib
       run: set -eu && git clone https://github.com/Yandex-Practicum/web-autotest-public.git
     - name: Copy Makefile
