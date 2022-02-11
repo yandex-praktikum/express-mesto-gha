@@ -16,9 +16,6 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: 14.x
-    - name: Сheck if the repository is private
-      run: exit 1
-      if: ${{github.event.repository.private}}
     - name: Get testing lib
       run: set -eu && git clone --depth 1 https://github.com/rpill/web-autotest-public.git
     - name: Copy Makefile
@@ -38,9 +35,6 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: 14.x
-    - name: Сheck if the repository is private
-      run: exit 1
-      if: ${{github.event.repository.private}}
     - name: Start MongoDB
       uses: supercharge/mongodb-github-action@1.6.0
       with:
