@@ -3,7 +3,9 @@ name: Tests 14 sprint
 on:
   push:
     branches:
-      - main
+      - '**'
+    tags:
+      - '**'
 
 
 jobs:
