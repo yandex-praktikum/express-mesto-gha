@@ -16,6 +16,7 @@ app.use((req, res, next) => {
 // подключаю парсер
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+// подключаю роутинг
 app.use('/', require('./routes/users'));
 app.use('/', require('./routes/cards'));
 
