@@ -1,6 +1,7 @@
 class NotFoundError extends Error {
-  constructor(massage) {
-    super(massage);
+  constructor(message) {
+    super(message);
+    this.name = 'NotFoundError';
     this.statusCode = 404;
   }
 }
