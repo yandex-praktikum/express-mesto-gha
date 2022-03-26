@@ -26,10 +26,15 @@ module.exports.findUser = (req, res) => {
 
 module.exports.findUserById = (req, res) => {
   User.findById(req.params.userId)
-    .then((user) => res.status(200).send(user))
+    .then((user) => {
+      if (!user) {
+        return res.status(404).send({ "message": "Пользователь по указанному _id не найден" });
+      }
+      return res.status(200).send(user);
+    })
     .catch((err) => {
       const ERROR_CODE = 400;
-      if (err.name === 'CastError') return res.status(ERROR_CODE).send({ "message": "Пользователь по указанному _id не найден" });
+      if (err.name === 'CastError') return res.status(ERROR_CODE).send({ "message": "Переданы некорректные данные. Пользователь по указанному _id не найден" });
       return res.status(500).send({ message: `На сервере произошла ошибка ${err}` });
     });
 };
