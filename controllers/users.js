@@ -10,18 +10,14 @@ module.exports.createUser = (req, res) => {
     .catch((err) => {
       const ERROR_CODE = 400;
       if (err.name === 'ValidationError') return res.status(ERROR_CODE).send({ "message": "Переданы некорректные данные при создании пользователя" });
-      return res.status(500).send({ message: `На сервере произошла ошибка ${err}` });
+      return res.status(500).send({ "message": `На сервере произошла ошибка ${err}` });
     });
 };
 
 module.exports.findUser = (req, res) => {
   User.find({})
     .then((user) => res.status(200).send({ data: user }))
-    .catch((err) => {
-      const ERROR_CODE = 400;
-      if (err.name === 'ValidationError') return res.status(ERROR_CODE).send({ "message": "Переданы некорректные данные при создании пользователя" });
-      return res.status(500).send({ message: `На сервере произошла ошибка ${err}` });
-    });
+    .catch((err) => res.status(500).send({ "message": `На сервере произошла ошибка ${err}` }));
 };
 
 module.exports.findUserById = (req, res) => {
@@ -35,7 +31,7 @@ module.exports.findUserById = (req, res) => {
     .catch((err) => {
       const ERROR_CODE = 400;
       if (err.name === 'CastError') return res.status(ERROR_CODE).send({ "message": "Переданы некорректные данные. Пользователь по указанному _id не найден" });
-      return res.status(500).send({ message: `На сервере произошла ошибка ${err}` });
+      return res.status(500).send({ "message": `На сервере произошла ошибка ${err}` });
     });
 };
 
@@ -52,7 +48,7 @@ module.exports.updateUser = (req, res) => {
       const ERROR_CODE = 400;
       if (err.name === 'ValidationError') return res.status(ERROR_CODE).send({ "message": "Переданы некорректные данные при обновлении пользователя" });
       if (err.name === 'CastError') return res.status(ERROR_CODE).send({ "message": "Переданы некорректные данные при обновлении профиля" });
-      return res.status(500).send({ message: `На сервере произошла ошибка ${err}` });
+      return res.status(500).send({ "message": `На сервере произошла ошибка ${err}` });
     });
 };
 
@@ -69,6 +65,6 @@ module.exports.updateAvatar = (req, res) => {
       const ERROR_CODE = 400;
       if (err.name === 'ValidationError') return res.status(ERROR_CODE).send({ "message": "Переданы некорректные данные при обновлении пользователя" });
       if (err.name === 'CastError') return res.status(ERROR_CODE).send({ "message": "Запрашиваемый пользователь не найден" });
-      return res.status(500).send({ message: `На сервере произошла ошибка ${err}` });
+      return res.status(500).send({ "message": `На сервере произошла ошибка ${err}` });
     });
 };
