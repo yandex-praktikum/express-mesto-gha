@@ -20,7 +20,7 @@ module.exports.getCards = (req, res) => {
     .catch((err) => res.status(500).send({ "message": `На сервере произошла ошибка ${err}` }));
 };
 module.exports.deleteCard = (req, res) => {
-  Card.findById(req.params._id)
+  Card.findById(req.params.cardId)
     .then((card) => {
       if (!card) {
         return res.status(404).send({ "message": "Карточка с указанным id не найдена" });
@@ -57,7 +57,7 @@ module.exports.likeCard = (req, res) => {
 };
 module.exports.dislikeCard = (req, res) => {
   Card.findByIdAndUpdate(
-    req.params.userId,
+    req.params.cardId,
     { $pull: { likes: req.user._id } }, // убрать _id из массива
     { new: true },
   )
