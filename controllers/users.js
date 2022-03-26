@@ -19,28 +19,28 @@ module.exports.findUser = (req, res) => {
     .then((user) => res.status(200).send(user))
     .catch((err) => {
       const ERROR_CODE = 400;
-      if (err.name === 'SomeErrorName') return res.status(ERROR_CODE).send({ "message": "Переданы некорректные данные при создании пользователя" });
+      if (err.name === 'ValidationError') return res.status(ERROR_CODE).send({ "message": "Переданы некорректные данные при создании пользователя" });
       return res.status(500).send({ message: `На сервере произошла ошибка ${err}` });
     });
 };
 
 module.exports.findUserById = (req, res) => {
-  User.findById(req.params._id)
+  User.findById(req.params.userId)
     .then((user) => res.status(200).send(user))
     .catch((err) => {
       const ERROR_CODE = 404;
-      if (err.name === 'SomeErrorName') return res.status(ERROR_CODE).send({ "message": "Пользователь по указанному _id не найден" });
+      if (err.name === 'CastError') return res.status(ERROR_CODE).send({ "message": "Пользователь по указанному _id не найден" });
       return res.status(500).send({ message: `На сервере произошла ошибка ${err}` });
     });
 };
 
 module.exports.updateUser = (req, res) => {
   const { name, about } = req.body;
-  User.findByIdAndUpdate(req.user._id, { name, about }, { new: true })
+  User.findByIdAndUpdate(req.user.id, { name, about }, { new: true })
     .then((user) => res.status(200).send(user))
     .catch((err) => {
       const ERROR_CODE = 400;
-      if (err.name === 'SomeErrorName') return res.status(ERROR_CODE).send({ "message": "Переданы некорректные данные при обновлении профиля" });
+      if (err.name === 'CastError') return res.status(ERROR_CODE).send({ "message": "Переданы некорректные данные при обновлении профиля" });
       return res.status(500).send({ message: `На сервере произошла ошибка ${err}` });
     });
 };
@@ -51,7 +51,7 @@ module.exports.updateAvatar = (req, res) => {
     .then((user) => res.status(200).send(user))
     .catch((err) => {
       const ERROR_CODE = 400;
-      if (err.name === 'SomeErrorName') return res.status(ERROR_CODE).send({ "message": "Запрашиваемый пользователь не найден" });
+      if (err.name === 'CastError') return res.status(ERROR_CODE).send({ "message": "Запрашиваемый пользователь не найден" });
       return res.status(500).send({ message: `На сервере произошла ошибка ${err}` });
     });
 };
