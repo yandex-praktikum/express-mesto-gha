@@ -1,4 +1,4 @@
-/* eslint-disable quote-props */
+/* eslint-disable quotes */
 /* eslint-disable no-console */
 const express = require('express');
 const mongoose = require('mongoose');
@@ -22,7 +22,8 @@ app.use('/', require('./routes/users'));
 app.use('/', require('./routes/cards'));
 
 app.use('*', (req, res) => {
-  res.status(404).send({ 'message': 'Запрашиваемый ресурс не найден' });
+  // eslint-disable-next-line quote-props
+  res.status(404).send({ "message": "Запрашиваемый ресурс не найден" });
 });
 
 app.listen(PORT, () => {

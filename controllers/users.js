@@ -9,7 +9,7 @@ module.exports.createUser = (req, res) => {
   // данные не записались, вернём ошибку
     .catch((err) => {
       const ERROR_CODE = 400;
-      if (err.name === 'SomeErrorName') return res.status(ERROR_CODE).send({ "message": "Переданы некорректные данные при создании пользователя" });
+      if (err.name === 'name') return res.status(ERROR_CODE).send({ "message": "Переданы некорректные данные при создании пользователя" });
       return res.status(500).send({ message: `На сервере произошла ошибка ${err}` });
     });
 };
