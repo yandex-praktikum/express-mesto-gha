@@ -11,7 +11,7 @@ const {
 // роуты карточек
 router.post('/cards', createCard);
 router.get('/cards', getCards);
-router.delete('/cards/:userId', deleteCard);
+router.delete('/cards/:cardId', deleteCard);
 router.put('/cards/:userId/likes', likeCard);
 router.delete('/cards/:userId/likes', dislikeCard);
 
