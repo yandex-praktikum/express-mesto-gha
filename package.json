@@ -2,7 +2,7 @@
   "name": "express-mesto",
   "version": "1.0.0",
   "description": "`/routes` — папка с файлами роутера  \r `/controllers` — папка с файлами контроллеров пользователя и карточки   \r `/models` — папка с файлами описания схем пользователя и карточки",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "npx eslint .",
@@ -14,7 +14,11 @@
     "url": "git+https://github.com/0R8-9dzcl/express-mesto.git"
   },
   "keywords": [],
-  "author": "",
+  "author": {
+    "name": "Алексеев Евгений",
+    "email": "alekseev.evgeniy.wd@yandex.ru",
+    "url": "https://github.com/0R8-9dzcl"
+  },
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/0R8-9dzcl/express-mesto/issues"
