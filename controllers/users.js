@@ -39,9 +39,9 @@ module.exports.createUser = (req, res, next) => {
       })
     // данные не записались, вернём ошибку
       .catch((err) => {
-        if (err.name === 'ValidationError') throw new BadReqError('Переданы некорректные данные при создании пользователя');
-        if (err.code === 11000) throw new ConflictError('Переданы некорректные данные при создании пользователя');
-        return next(err);
+        if (err.name === 'ValidationError') next(new BadReqError('Переданы некорректные данные при создании пользователя'));
+        if (err.name === 'MongoServerError') next(new ConflictError('Пользователь с таким адресом электроной почты уже зарегистрирован!'));
+        next(err);
       }));
 };
 
@@ -80,7 +80,7 @@ module.exports.findUserById = (req, res, next) => {
       return res.status(200).send({ data: user });
     })
     .catch((err) => {
-      if (err.name === 'CastError') throw new BadReqError('Переданы некорректные данные. Пользователь по указанному _id не найден');
+      if (err.name === 'CastError') next(new BadReqError('Переданы некорректные данные. Пользователь по указанному _id не найден'));
       next(err);
     });
 };
@@ -95,8 +95,8 @@ module.exports.updateUser = (req, res, next) => {
       return res.status(200).send({ data: user });
     })
     .catch((err) => {
-      if (err.name === 'ValidationError') throw new BadReqError('Переданы некорректные данные при обновлении данных пользователя');
-      if (err.name === 'CastError') throw new BadReqError('Переданы некорректные данные при обновлении данных пользователя');
+      if (err.name === 'ValidationError') next(new BadReqError('Переданы некорректные данные при обновлении данных пользователя'));
+      if (err.name === 'CastError') next(new BadReqError('Переданы некорректные данные при обновлении данных пользователя'));
       next(err);
     });
 };
@@ -111,8 +111,8 @@ module.exports.updateAvatar = (req, res, next) => {
       return res.status(200).send({ data: user });
     })
     .catch((err) => {
-      if (err.name === 'ValidationError') throw new BadReqError('Переданы некорректные данные при обновлении данных пользователя');
-      if (err.name === 'CastError') throw new BadReqError('Переданы некорректные данные при обновлении данных пользователя');
+      if (err.name === 'ValidationError') next(new BadReqError('Переданы некорректные данные при обновлении данных пользователя'));
+      if (err.name === 'CastError') next(new BadReqError('Переданы некорректные данные при обновлении данных пользователя'));
       next(err);
     });
 };

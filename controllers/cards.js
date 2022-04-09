@@ -12,7 +12,7 @@ module.exports.createCard = (req, res, next) => {
     .then((card) => res.status(201).send({ data: card }))
   // данные не записались, вернём ошибку
     .catch((err) => {
-      if (err.name === 'ValidationError') throw BadReqError('Переданы некорректные данные при создании карточки');
+      if (err.name === 'ValidationError') next(BadReqError('Переданы некорректные данные при создании карточки'));
       next(err);
     });
 };
@@ -24,17 +24,13 @@ module.exports.getCards = (req, res, next) => {
 module.exports.deleteCard = (req, res, next) => {
   Card.findById(req.params.cardId)
     .then((card) => {
-      if (!card) {
-        throw new NotFoundError('Карточка с указанным id не найдена');
-      }
-      if (card.owner.toString() !== req.user._id.toString()) {
-        throw new ForbiddenError('Карточка создана другим пользователем');
-      }
+      if (!card) throw new NotFoundError('Карточка с указанным id не найдена');
+      if (card.owner.toString() !== req.user._id.toString()) throw new ForbiddenError('Карточка создана другим пользователем');
       card.remove();
       return res.status(200).send({ message: 'Карточка успешно удалена.' });
     })
     .catch((err) => {
-      if (err.name === 'CastError') throw new BadReqError('Переданы некорректные данные при удалении карточки');
+      if (err.name === 'CastError') next(new BadReqError('Переданы некорректные данные при удалении карточки'));
       next(err);
     });
 };
@@ -51,7 +47,7 @@ module.exports.likeCard = (req, res, next) => {
       return res.status(200).send({ data: card });
     })
     .catch((err) => {
-      if (err.name === 'CastError') throw new BadReqError('Переданы некорректные данные при лайке карточки');
+      if (err.name === 'CastError') next(new BadReqError('Переданы некорректные данные при лайке карточки'));
       next(err);
     });
 };
@@ -68,7 +64,7 @@ module.exports.dislikeCard = (req, res, next) => {
       return res.status(200).send({ data: card });
     })
     .catch((err) => {
-      if (err.name === 'CastError') throw new BadReqError('Переданы некорректные данные при удалении лайка карточки');
+      if (err.name === 'CastError') next(new BadReqError('Переданы некорректные данные при удалении лайка карточки'));
       next(err);
     });
 };
