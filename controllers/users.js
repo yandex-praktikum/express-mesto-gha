@@ -1,70 +1,118 @@
 /* eslint-disable quotes */
 /* eslint-disable quote-props */
+const { NODE_ENV, JWT_SECRET } = process.env;
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 const User = require('../models/user');
+const BadReqError = require('../errors/BadReqError');
+const NotFoundError = require('../errors/NotFoundError');
+const ConflictError = require('../errors/ConflictError');
 
-module.exports.createUser = (req, res) => {
-  const { name, about, avatar } = req.body;
-  User.create({ name, about, avatar })
-    .then((user) => res.status(201).send({ data: user }))
-  // данные не записались, вернём ошибку
-    .catch((err) => {
-      const ERROR_CODE = 400;
-      if (err.name === 'ValidationError') return res.status(ERROR_CODE).send({ "message": "Переданы некорректные данные при создании пользователя" });
-      return res.status(500).send({ "message": `На сервере произошла ошибка ${err}` });
-    });
+module.exports.createUser = (req, res, next) => {
+  const {
+    email,
+    password,
+    name,
+    about,
+    avatar,
+  } = req.body;
+  bcrypt.hash(password, 10)
+    .then((hash) => User.create({
+      email,
+      password: hash,
+      name,
+      about,
+      avatar,
+    })
+      .then((user) => {
+        if (!user) {
+          // ошибка 'Переданы некорректные данные при создании пользователя'
+        }
+        res.status(201).send({
+          data: {
+            name,
+            about,
+            avatar,
+            email,
+          },
+        });
+      })
+    // данные не записались, вернём ошибку
+      .catch((err) => {
+        if (err.name === 'ValidationError') throw new BadReqError('Переданы некорректные данные при создании пользователя');
+        if (err.code === 11000) throw new ConflictError('Переданы некорректные данные при создании пользователя');
+        return next(err);
+      }));
 };
 
-module.exports.findUser = (req, res) => {
+module.exports.login = (req, res, next) => {
+  const { email, password } = req.body;
+  User.findUserByCredentials(email, password)
+    .then((user) => {
+      // аутентификация успешна! пользователь в переменной user
+      const token = jwt.sign(
+        { _id: user._id },
+        NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret',
+        { expiresIn: '7d' },
+      );
+      res.cookie('jwt', token, {
+        maxAge: 3600000 * 24 * 7,
+        httpOnly: true,
+      })
+        .end();
+    })
+    .catch(next);
+};
+
+module.exports.findUser = (req, res, next) => {
   User.find({})
     .then((user) => res.status(200).send({ data: user }))
-    .catch((err) => res.status(500).send({ "message": `На сервере произошла ошибка ${err}` }));
+    .catch(next);
 };
 
-module.exports.findUserById = (req, res) => {
-  User.findById(req.params.userId)
+module.exports.findUserById = (req, res, next) => {
+  const searchedUser = req.params.userId ? req.params.userId : req.user._id;
+  User.findById(searchedUser)
     .then((user) => {
       if (!user) {
-        return res.status(404).send({ "message": "Пользователь по указанному _id не найден" });
+        throw new NotFoundError('Пользователь по указанному _id не найден');
       }
       return res.status(200).send({ data: user });
     })
     .catch((err) => {
-      const ERROR_CODE = 400;
-      if (err.name === 'CastError') return res.status(ERROR_CODE).send({ "message": "Переданы некорректные данные. Пользователь по указанному _id не найден" });
-      return res.status(500).send({ "message": `На сервере произошла ошибка ${err}` });
+      if (err.name === 'CastError') throw new BadReqError('Переданы некорректные данные. Пользователь по указанному _id не найден');
+      next(err);
     });
 };
 
-module.exports.updateUser = (req, res) => {
+module.exports.updateUser = (req, res, next) => {
   const { name, about } = req.body;
   User.findByIdAndUpdate(req.user._id, { name, about }, { new: true, runValidators: true })
     .then((user) => {
       if (!user) {
-        return res.status(404).send({ "message": "Пользователь по указанному _id не найден" });
+        throw new NotFoundError('Пользователь по указанному _id не найден');
       }
       return res.status(200).send({ data: user });
     })
     .catch((err) => {
-      const ERROR_CODE = 400;
-      if (err.name === 'ValidationError') return res.status(ERROR_CODE).send({ "message": "Переданы некорректные данные при обновлении пользователя" });
-      if (err.name === 'CastError') return res.status(ERROR_CODE).send({ "message": "Переданы некорректные данные при обновлении профиля" });
-      return res.status(500).send({ "message": `На сервере произошла ошибка ${err}` });
+      if (err.name === 'ValidationError') throw new BadReqError('Переданы некорректные данные при обновлении данных пользователя');
+      if (err.name === 'CastError') throw new BadReqError('Переданы некорректные данные при обновлении данных пользователя');
+      next(err);
     });
 };
 
-module.exports.updateAvatar = (req, res) => {
+module.exports.updateAvatar = (req, res, next) => {
   const { avatar } = req.body;
   User.findByIdAndUpdate(req.user._id, { avatar }, { new: true, runValidators: true })
     .then((user) => {
       if (!user) {
-        return res.status(404).send({ "message": "Пользователь по указанному _id не найден" });
+        throw new NotFoundError('Пользователь по указанному _id не найден');
       }
       return res.status(200).send({ data: user });
     })
     .catch((err) => {
-      const ERROR_CODE = 400;
-      if (err.name === 'ValidationError') return res.status(ERROR_CODE).send({ "message": "Переданы некорректные данные при обновлении пользователя" });
-      if (err.name === 'CastError') return res.status(ERROR_CODE).send({ "message": "Запрашиваемый пользователь не найден" });
-      return res.status(500).send({ "message": `На сервере произошла ошибка ${err}` });
+      if (err.name === 'ValidationError') throw new BadReqError('Переданы некорректные данные при обновлении данных пользователя');
+      if (err.name === 'CastError') throw new BadReqError('Переданы некорректные данные при обновлении данных пользователя');
+      next(err);
     });
 };
