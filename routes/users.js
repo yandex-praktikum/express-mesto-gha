@@ -1,7 +1,7 @@
 const router = require('express').Router();
 // импорт контроллеров
 const {
-  createUser,
+  // createUser,
   findUser,
   findUserById,
   updateUser,
@@ -10,8 +10,9 @@ const {
 
 // роуты пользователей
 router.get('/users', findUser);
+router.get('/users/me', findUserById);
 router.get('/users/:userId', findUserById);
-router.post('/users', createUser);
+// router.post('/users', createUser);
 router.patch('/users/me', updateUser);
 router.patch('/users/me/avatar', updateAvatar);
 
