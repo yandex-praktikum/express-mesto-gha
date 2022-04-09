@@ -1,29 +1,59 @@
 /* eslint-disable quotes */
 /* eslint-disable no-console */
+require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser');
+const { celebrate, Joi, errors } = require('celebrate'); // валидатор запросов
+const auth = require('./middlewares/auth');
+const userRouter = require('./routes/users');
+const CardRouter = require('./routes/cards');
+const { login, createUser } = require('./controllers/users');
+const NotFoundError = require('./errors/NotFoundError');
 
 const { PORT = 3000 } = process.env;
 mongoose.connect('mongodb://localhost:27017/mestodb');
 const app = express();
-// временная авторизация
-app.use((req, res, next) => {
-  req.user = {
-    _id: '61a237e41a659eb38914e3fd', // вставьте сюда _id созданного в предыдущем пункте пользователя
-  };
-  next();
-});
-// подключаю парсер
+// подключаю парсеры
+app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+// роуты неавторизованого пользователя
+app.post('/signin', celebrate({
+  body: Joi.object().keys({
+    email: Joi.string().required().email(),
+    password: Joi.string().required().min(8),
+  }),
+}), login);
+app.post('/signup', celebrate({
+  body: Joi.object().keys({
+    name: Joi.string().default('Жак-Ив Кусто').min(2).max(30),
+    about: Joi.string().default('Исследователь').min(2).max(30),
+    avatar: Joi.string().default('https://pictures.s3.yandex.net/resources/jacques-cousteau_1604399756.png'),
+    email: Joi.string().required().email(),
+    password: Joi.string().required().min(8),
+  }),
+}), createUser);
+// Защита авторизацией
+app.use(auth);
 // подключаю роутинг
-app.use('/', require('./routes/users'));
-app.use('/', require('./routes/cards'));
-
-app.use('*', (req, res) => {
-  // eslint-disable-next-line quote-props
-  res.status(404).send({ "message": "Запрашиваемый ресурс не найден" });
+app.use('/', userRouter);
+app.use('/', CardRouter);
+app.use('*', (req, res, next) => {
+  next(new NotFoundError('Запрашиваемый ресурс не найден'));
+});
+// обработчики ошибок
+app.use(errors()); // обработчик ошибок celebrate
+// Централизованная обработка ошибок
+app.use((err, req, res, next) => {
+  const { statusCode = 500, message } = err;
+  res.status(statusCode).send({
+    message: statusCode === 500
+      ? `На сервере произошла ошибка ${err}`
+      : message,
+  });
+  next();
 });
 
 app.listen(PORT, () => {
