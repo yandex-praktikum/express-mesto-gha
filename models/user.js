@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
-const bcrypt = require('bcryptjs');
-const isEmail = require('validator/es/lib/isEmail');
+const isEmail = require('validator/lib/isEmail');
 
 const userSchema = new mongoose.Schema({
   email: {
@@ -32,26 +31,8 @@ const userSchema = new mongoose.Schema({
   avatar: {
     type: String,
     default: 'https://pictures.s3.yandex.net/resources/jacques-cousteau_1604399756.png',
+    validator: ((v) => /^https?:\/\/(www)?[\w\W]{1,}/.test(v)),
   },
 });
-
-userSchema.statics.findUserByCredentials = function userLogin(email, password) {
-  this.findOne({ email })
-    .then((user) => {
-      if (!user) {
-        // ошибка 'Пользователь с такой почтой не найден' код 401
-      }
-      // юзер найден
-      return bcrypt.compare(password, user.password)
-        .then((matched) => {
-          if (!matched) {
-            // ошибка 'Неправильные почта или пароль' код 401
-          }
-          // аутентификация успешна
-          // отправка данных пользователя
-          return user;
-        });
-    });
-};
 
 module.exports = mongoose.model('user', userSchema);
