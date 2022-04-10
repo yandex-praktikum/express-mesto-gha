@@ -64,7 +64,7 @@ module.exports.login = (req, res, next) => {
     .catch(next);
 };
 
-module.exports.findUser = (req, res, next) => {
+module.exports.findUsers = (req, res, next) => {
   User.find({})
     .then((user) => res.status(200).send({ data: user }))
     .catch(next);
