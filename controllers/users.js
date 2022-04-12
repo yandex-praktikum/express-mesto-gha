@@ -22,10 +22,7 @@ module.exports.createUser = (req, res, next) => {
       about,
       avatar,
     })
-      .then((user) => {
-        if (!user) {
-          // ошибка 'Переданы некорректные данные при создании пользователя'
-        }
+      .then(() => {
         res.status(201).send({
           data: {
             name,
