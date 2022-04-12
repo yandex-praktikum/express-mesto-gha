@@ -24,8 +24,8 @@ module.exports.deleteCard = (req, res, next) => {
     .then((card) => {
       if (!card) throw new NotFoundError('Карточка с указанным id не найдена');
       if (card.owner.toString() !== req.user._id.toString()) throw new ForbiddenError('Карточка создана другим пользователем');
-      card.remove();
-      return res.status(200).send({ message: 'Карточка успешно удалена.' });
+      return card.remove()
+        .then(() => res.status(200).send({ message: 'Карточка успешно удалена.' }));
     })
     .catch((err) => {
       if (err.name === 'CastError') next(new BadReqError('Переданы некорректные данные при удалении карточки'));
