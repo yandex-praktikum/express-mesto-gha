@@ -22,13 +22,13 @@ module.exports.createUser = (req, res, next) => {
       about,
       avatar,
     })
-      .then(() => {
+      .then((user) => {
         res.status(201).send({
           data: {
-            name,
-            about,
-            avatar,
-            email,
+            email: user.email,
+            name: user.name,
+            about: user.about,
+            avatar: user.avatar,
           },
         });
       })
