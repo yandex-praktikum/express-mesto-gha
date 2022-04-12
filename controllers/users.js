@@ -54,7 +54,16 @@ module.exports.login = (req, res, next) => {
         maxAge: 3600000 * 24 * 7,
         httpOnly: true,
       })
-        .send(user);
+        .status(200)
+        .send({
+          data: {
+            _id: user._id,
+            email: user.email,
+            name: user.name,
+            about: user.about,
+            avatar: user.avatar,
+          },
+        });
     })
     .catch(next);
 };
