@@ -1,5 +1,3 @@
-/* eslint-disable quotes */
-/* eslint-disable quote-props */
 const Card = require('../models/card');
 const BadReqError = require('../errors/BadReqError');
 const ForbiddenError = require('../errors/ForbiddenError');

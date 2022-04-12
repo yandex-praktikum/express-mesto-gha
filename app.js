@@ -1,5 +1,3 @@
-/* eslint-disable quotes */
-/* eslint-disable no-console */
 require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
@@ -24,7 +22,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.post('/signin', celebrate({
   body: Joi.object().keys({
     email: Joi.string().required().email(),
-    password: Joi.string().required().min(8),
+    password: Joi.string().required(),
   }),
 }), login);
 app.post('/signup', celebrate({
@@ -33,7 +31,7 @@ app.post('/signup', celebrate({
     about: Joi.string().default('Исследователь').min(2).max(30),
     avatar: Joi.string().pattern(regExp).default('https://pictures.s3.yandex.net/resources/jacques-cousteau_1604399756.png'),
     email: Joi.string().required().email(),
-    password: Joi.string().required().min(8),
+    password: Joi.string().required(),
   }),
 }), createUser);
 // Защита авторизацией

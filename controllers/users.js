@@ -1,5 +1,3 @@
-/* eslint-disable quotes */
-/* eslint-disable quote-props */
 const { NODE_ENV, JWT_SECRET } = process.env;
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
