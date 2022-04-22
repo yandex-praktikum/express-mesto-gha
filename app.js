@@ -10,10 +10,13 @@ const CardRouter = require('./routes/cards');
 const { login, createUser } = require('./controllers/users');
 const NotFoundError = require('./errors/NotFoundError');
 const regExp = require('./utils/regex'); // регулярка
+const cors = require('./middlewares/cors'); // импорт CORS
 
 const { PORT = 3000 } = process.env;
 mongoose.connect('mongodb://localhost:27017/mestodb');
 const app = express();
+// включаю корс
+app.use(cors);
 // подключаю парсеры
 app.use(cookieParser());
 app.use(bodyParser.json());
