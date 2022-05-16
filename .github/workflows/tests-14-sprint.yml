@@ -31,7 +31,6 @@ jobs:
       run: make proj14-test-config
 
   test_endpoints:
-    needs: test_config
     runs-on: ubuntu-latest
     steps:
     - name: Set up GitHub Actions
