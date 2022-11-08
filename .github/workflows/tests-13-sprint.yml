@@ -23,7 +23,7 @@ jobs:
     - name: Copy Makefile
       run: cp ./web-autotest-public/Makefile ./Makefile
     - name: Installing Dependencies
-      run: npm i
+      run: npm i -f
     - name: Run test config
       run: make proj13-test-config
 
@@ -47,12 +47,12 @@ jobs:
     - name: Run prepare-test-endpoints
       run: make proj13-prepare-test-endpoints
     - name: Installing Dependencies
-      run: npm i
+      run: npm i -f
     - name: Run server
       run: npm run start &
     - name: Installing wait-port
       run: npm install -g wait-port
     - name: Wait for server to start
       run: wait-port -t 30000 localhost:3000
-    - name: Run test config
+    - name: Run test endpoints
       run: make proj13-test-endpoints
