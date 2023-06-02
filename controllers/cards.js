@@ -35,7 +35,13 @@ const deleteCard = (req, res) => {
       }
       res.status(OK).send(card);
     })
-    .catch(() => res.status(SERVER_ERROR).send({ message: 'Ошибка на сервере' }));
+    .catch((err) => {
+      if (err.name === 'CastError') {
+        res.status(BAD_REQUEST).send({ message: 'Введены некорректные данные' });
+      } else {
+        res.status(SERVER_ERROR).send({ message: 'Ошибка на сервере' });
+      }
+    });
 };
 
 const setLike = (req, res) => {
