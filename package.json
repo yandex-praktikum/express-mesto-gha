@@ -14,12 +14,11 @@
   },
   "description": "[![Tests](../../actions/workflows/tests-13-sprint.yml/badge.svg)](../../actions/workflows/tests-13-sprint.yml) [![Tests](../../actions/workflows/tests-14-sprint.yml/badge.svg)](../../actions/workflows/tests-14-sprint.yml)\r # Проект Mesto фронтенд + бэкенд",
   "main": "app.js",
-  "author": "",
+  "author": "Svetlana Kuznetsova",
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.20.2",
     "express": "^4.18.2",
-    "mongodb": "^5.5.0",
     "mongoose": "^7.2.1"
   }
 }
