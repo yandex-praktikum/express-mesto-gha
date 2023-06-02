@@ -33,7 +33,7 @@ const deleteCard = (req, res) => {
       if (!card) {
         res.status(NOT_FOUND).send({ message: 'Карточка не найдена' });
       }
-      return res.status(OK).send(card);
+      res.status(OK).send(card);
     })
     .catch(() => res.status(SERVER_ERROR).send({ message: 'Ошибка на сервере' }));
 };

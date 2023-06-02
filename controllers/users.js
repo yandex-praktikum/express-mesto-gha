@@ -50,8 +50,9 @@ const updateProfile = (req, res) => {
     .then((user) => {
       if (!user) {
         res.status(NOT_FOUND).send({ message: 'Пользователь не найден' });
+      } else {
+        res.status(OK).send(user);
       }
-      return res.status(OK).send(user);
     })
     .catch((err) => {
       if (err.name === 'ValidationError') {
@@ -68,8 +69,9 @@ const updateAvatar = (req, res) => {
     .then((user) => {
       if (!user) {
         res.status(NOT_FOUND).send({ message: 'Пользователь не найден' });
+      } else {
+        res.status(OK).send(user);
       }
-      return res.status(OK).send(user);
     })
     .catch((err) => {
       if (err.name === 'ValidationError') {
