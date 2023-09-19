@@ -49,7 +49,7 @@ jobs:
     - name: Installing Dependencies
       run: npm i
     - name: Installing wait-port
-      run: npm install -g wait-port
+      run: npm install -g wait-port@1.0.4
     - name: Run server
       run: npm run start & wait-port -t 30000 localhost:3000
     - name: Run test config
