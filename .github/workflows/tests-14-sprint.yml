@@ -13,10 +13,10 @@ jobs:
     steps:
     - name: Set up GitHub Actions
       uses: actions/checkout@v2
-    - name: Use Node.js 14.x
+    - name: Use Node.js 18.x
       uses: actions/setup-node@v1
       with:
-        node-version: 14.x
+        node-version: 18.x
     - name: Get testing lib
       run: set -eu && git clone --depth 1 https://github.com/Yandex-Practicum/web-autotest-public.git
     - name: Copy Makefile
@@ -31,10 +31,10 @@ jobs:
     steps:
     - name: Set up GitHub Actions
       uses: actions/checkout@v2
-    - name: Use Node.js 14.x
+    - name: Use Node.js 18.x
       uses: actions/setup-node@v1
       with:
-        node-version: 14.x
+        node-version: 18.x
     - name: Start MongoDB
       uses: supercharge/mongodb-github-action@1.6.0
       with:
@@ -46,7 +46,7 @@ jobs:
     - name: Installing Dependencies
       run: npm i
     - name: Installing wait-port
-      run: npm install -g wait-port
+      run: npm install -g wait-port@1.0.4
     - name: Run server
       run: npm run start & wait-port -t 30000 localhost:3000
     - name: Run test endpoints
