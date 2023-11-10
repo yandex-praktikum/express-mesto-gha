@@ -43,10 +43,8 @@ jobs:
       run: set -eu && git clone --depth 1 https://github.com/Yandex-Practicum/web-autotest-public.git
     - name: Copy Makefile
       run: cp ./web-autotest-public/Makefile ./Makefile
-    - name: Installing Dependencies
-      run: npm i
-    - name: Installing wait-port
-      run: npm install -g wait-port@1.0.4
+    - name: Run before-starting-server
+      run: make proj14-before-starting-server
     - name: Run server
       run: npm run start & wait-port -t 30000 localhost:3000
     - name: Run test endpoints
